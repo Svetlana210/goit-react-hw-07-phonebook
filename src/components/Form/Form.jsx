@@ -1,8 +1,7 @@
 import styles from './form.module.css';
 import { useState } from 'react';
 
-
-const Form = ({ onSubmit, doubleContact }) => {
+const Form = ({ onSubmit }) => {
   const [state, setState] = useState({ name: '', number: '' });
 
   const handleChange = e => {
@@ -17,11 +16,7 @@ const Form = ({ onSubmit, doubleContact }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const toLowerName = state.name.toLowerCase();
-    const doubleName = doubleContact(toLowerName);
-    doubleName
-      ? alert(`${state.name} is already in contacts`)
-      : onSubmit(state);
+    onSubmit(state);
     setState({ name: '', number: '' });
   };
 

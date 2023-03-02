@@ -7,27 +7,27 @@ import Filter from './Filter/Filter';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setFilter } from '../redux/filter/filter-slice';
-import { addContact, deleteContact } from '../redux/contacts/contacts-slice';
-import {
-  getFilteredContacts,
-  getAllContacts,
-} from '../redux/contacts/contacts-selectors';
+
+import { getFilteredContacts } from '../redux/contacts/contacts-selectors';
 import { getFilter } from 'redux/filter/filter-selectors';
+import {
+  fetchAllContacts,
+  fetchAddContact,
+  fetchDeleteContact,
+} from '../redux/contacts/contacts-operations';
 
 const App = () => {
-  const contacts = useSelector(getAllContacts);
   const filteredContacts = useSelector(getFilteredContacts);
 
   const filter = useSelector(getFilter);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    localStorage.setItem('my-contacts', JSON.stringify(contacts));
-  }, [contacts]);
+    dispatch(fetchAllContacts());
+  }, [dispatch]);
 
   const onAddContact = ({ name, number }) => {
-    const action = addContact({ name, number });
-    dispatch(action);
+    dispatch(fetchAddContact({ name, number }));
   };
 
   const handleChangeFilter = e => {
@@ -35,19 +35,15 @@ const App = () => {
     dispatch(setFilter(value));
   };
 
-  const doubleContact = name => {
-    return contacts.find(contact => contact.name.toLowerCase() === name);
-  };
-
   const onDeleteContact = id => {
-    const action = deleteContact(id);
+    const action = fetchDeleteContact(id);
     dispatch(action);
   };
 
   return (
     <div className={styles.container}>
       <h1>Phonebook</h1>
-      <Form onSubmit={onAddContact} doubleContact={doubleContact} />
+      <Form onSubmit={onAddContact} />
       <h2>Contacts</h2>
       <Filter onChange={handleChangeFilter} filter={filter} />
       <ContactList

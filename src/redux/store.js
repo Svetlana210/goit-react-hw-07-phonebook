@@ -1,6 +1,5 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
-import { persistStore } from 'redux-persist';
 import rootReducer from '../redux/rootReducer';
 
 export const store = configureStore({
@@ -10,4 +9,4 @@ export const store = configureStore({
   }),
 });
 
-export const persistor = persistStore(store);
+export default store;
